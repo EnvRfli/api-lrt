@@ -26,9 +26,8 @@ class ReportsController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        // Upload proof file to azure storage
-        $filename = uniqid() . '.' . $request->file('distribution_proof')->getClientOriginalExtension();
-        $path = Storage::disk('azure')->putFileAs('proofs', $request->file('distribution_proof'), $filename);        
+        // Upload proof file
+        $path = $request->file('distribution_proof')->store('proofs');
 
         $report = reports::create([
             'user_id' => Auth::id(),
@@ -69,14 +68,12 @@ class ReportsController extends Controller
             return response()->json(['message' => 'Cannot update processed report.'], 400);
         }
 
-        // Upload proof file to azure storage
         if ($request->hasFile('distribution_proof')) {
-            $path = Storage::disk('azure')->put('proofs', $request->file('distribution_proof'));
-
             // Delete old proof file
-            if ($report->distribution_proof && Storage::disk('azure')->exists($report->distribution_proof)) {
-                Storage::disk('azure')->delete($report->distribution_proof);
-            }
+            Storage::delete($report->distribution_proof);
+
+            // Upload new proof file
+            $path = $request->file('distribution_proof')->store('proofs');
         } else {
             $path = $report->distribution_proof;
         }
