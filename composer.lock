@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93649ff42b0c70948918fc9ce98bc04f",
+    "content-hash": "e22a03d153fe233711e31585bc02dc89",
     "packages": [
         {
             "name": "brick/math",
@@ -1789,6 +1789,46 @@
                 "source": "https://github.com/thephpleague/flysystem/tree/3.29.1"
             },
             "time": "2024-10-08T08:58:34+00:00"
+        },
+        {
+            "name": "league/flysystem-azure-blob-storage",
+            "version": "3.28.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-azure-blob-storage.git",
+                "reference": "7856cc57ae74b0cf673b924e05c236c4f5dbdcb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-azure-blob-storage/zipball/7856cc57ae74b0cf673b924e05c236c4f5dbdcb0",
+                "reference": "7856cc57ae74b0cf673b924e05c236c4f5dbdcb0",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^3.10.0",
+                "microsoft/azure-storage-blob": "^1.1",
+                "php": "^8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\AzureBlobStorage\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/thephpleague/flysystem-azure-blob-storage/tree/3.28.0"
+            },
+            "time": "2024-05-06T20:05:52+00:00"
         },
         {
             "name": "league/flysystem-local",
