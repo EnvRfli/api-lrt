@@ -15,35 +15,43 @@ class ReportsController extends Controller
      * Endpoint: POST /api/reports
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'program_name' => 'required|in:PKH,BLT,Bansos',
-            'province_code' => 'required|string|max:50',
-            'district_code' => 'required|string|max:50',
-            'subdistrict_code' => 'required|string|max:50',
-            'recipient_count' => 'required|integer|min:1',
-            'distribution_date' => 'required|date',
-            'distribution_proof' => 'required|file|mimes:jpg,png,pdf|max:2048',
-            'notes' => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'program_name' => 'required|in:PKH,BLT,Bansos',
+        'province_code' => 'required|string|max:50',
+        'district_code' => 'required|string|max:50',
+        'subdistrict_code' => 'required|string|max:50',
+        'recipient_count' => 'required|integer|min:1',
+        'distribution_date' => 'required|date',
+        'distribution_proof' => 'required|file|mimes:jpg,png,pdf|max:2048',
+        'notes' => 'nullable|string',
+    ]);
 
-        $uploadedFileUrl = cloudinary()->upload($request->file('distribution_proof')->getRealPath())->getSecurePath();
-        $fileUrl = cloudinary()->getUrl($publicId);
+    // Upload the file to Cloudinary
+    $uploadResult = cloudinary()->upload($request->file('distribution_proof')->getRealPath());
     
-        $report = reports::create([
-            'user_id' => Auth::id(),
-            'program_name' => $validated['program_name'],
-            'province_code' => $validated['province_code'],
-            'district_code' => $validated['district_code'],
-            'subdistrict_code' => $validated['subdistrict_code'],
-            'recipient_count' => $validated['recipient_count'],
-            'distribution_date' => $validated['distribution_date'],
-            'distribution_proof' => $fileUrl, // Save the Cloudinary file URL
-            'notes' => $validated['notes'] ?? null,
-        ]);
-    
-        return response()->json($report, 201);
-    }
+    // Get the secure URL and public ID from the upload result
+    $uploadedFileUrl = $uploadResult->getSecurePath();
+    $publicId = $uploadResult->getPublicId(); // Get the public ID
+
+    // Optionally, you can get the URL using the public ID, but it's not necessary since you already have the secure URL
+    // $fileUrl = cloudinary()->getUrl($publicId);
+
+    // Create the report
+    $report = reports::create([
+        'user_id' => Auth::id(),
+        'program_name' => $validated['program_name'],
+        'province_code' => $validated['province_code'],
+        'district_code' => $validated['district_code'],
+        'subdistrict_code' => $validated['subdistrict_code'],
+        'recipient_count' => $validated['recipient_count'],
+        'distribution_date' => $validated['distribution_date'],
+        'distribution_proof' => $uploadedFileUrl, // Save the Cloudinary file URL
+        'notes' => $validated['notes'] ?? null,
+    ]);
+
+    return response()->json($report, 201);
+}
     
 
     /**
