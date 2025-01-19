@@ -57,6 +57,14 @@ return [
             'throw' => false,
         ],
 
+        'azure' => [
+        'driver'    => 'azure',
+        'name'      => env('AZURE_ACCOUNT_NAME'),
+        'key'       => env('AZURE_ACCOUNT_KEY'),
+        'container' => env('AZURE_CONTAINER'),
+        'url'       => env('AZURE_BLOB_ENDPOINT'),
+    ],
+
     ],
 
     /*
