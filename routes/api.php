@@ -11,6 +11,7 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [RegisteredUserController::class, 'userInfo']);
     Route::post('/reports', [ReportsController::class, 'store']);
     Route::patch('/reports/{id}', [ReportsController::class, 'update']);   
     Route::get('/reports', [ReportsController::class, 'indexUser']);

@@ -35,4 +35,8 @@ class RegisteredUserController extends Controller
             'user' => $user
         ]);
     }
+    public function userInfo (Request $request)
+    {
+        return response()->json($request->user());
+    }
 }
