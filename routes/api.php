@@ -5,6 +5,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReportsController;
+use Illuminate\Support\Facades\Http;
+
+Route::get('/provinces', function () {
+    $response = Http::get('https://wilayah.id/api/provinces.json');
+    return response()->json($response->json());
+});
+
+Route::get('/districts/{provinceCode}', function ($provinceCode) {
+    $response = Http::get("https://wilayah.id/api/regencies/{$provinceCode}.json");
+    return response()->json($response->json());
+});
+
+Route::get('/subdistricts/{districtCode}', function ($districtCode) {
+    $response = Http::get("https://wilayah.id/api/districts/{$districtCode}.json");
+    return response()->json($response->json());
+});
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
