@@ -26,14 +26,9 @@ class ReportsController extends Controller
             'distribution_proof' => 'required|file|mimes:jpg,png,pdf|max:2048',
             'notes' => 'nullable|string',
         ]);
-    
-        // Upload file to Cloudinary
-        $uploadedFile = $request->file('distribution_proof');
-        $cloudinaryUpload = Cloudinary::upload($uploadedFile->getRealPath(), [
-            'folder' => 'proofs',
-            'resource_type' => 'auto', // Supports both images and PDFs
-        ]);
-        $fileUrl = $cloudinaryUpload->getSecurePath(); // Get the file URL
+
+        $uploadedFileUrl = cloudinary()->upload($request->file('distribution_proof')->getRealPath())->getSecurePath();
+        $fileUrl = cloudinary()->getUrl($publicId);
     
         $report = reports::create([
             'user_id' => Auth::id(),
